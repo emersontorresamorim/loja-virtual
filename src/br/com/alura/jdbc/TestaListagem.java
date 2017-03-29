@@ -1,7 +1,6 @@
 package br.com.alura.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,7 +8,7 @@ import java.sql.Statement;
 public class TestaListagem {
 
 	public static void main(String[] args) throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/loja-virtual", "SA", "");
+		Connection connection = Database.getConnection();
 		Statement statement = connection.createStatement();
 		statement.execute("SELECT * FROM produto");
 		ResultSet resultSet = statement.getResultSet();
