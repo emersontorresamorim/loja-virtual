@@ -7,3 +7,5 @@ INSERT INTO PRODUTO VALUES(1,'Geladeira','Geladeira Brastemp 2 portas Inox')
 COMMIT
 INSERT INTO PRODUTO VALUES(2,'Ferro de Passar','Ferro de Passar Arno com vaporizador')
 COMMIT
+/*C3*/SET SCHEMA PUBLIC
+DISCONNECT
