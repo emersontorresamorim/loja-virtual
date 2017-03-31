@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.alura.modelo.Categoria;
 import br.com.alura.modelo.Produto;
 
 public class ProdutoDAO {
@@ -49,15 +50,7 @@ public class ProdutoDAO {
 		
 		try (PreparedStatement ps = connection.prepareStatement(sql)) {
 			ps.execute();
-			try (ResultSet rs = ps.getResultSet()) {
-				while (rs.next()) {
-					Integer id = rs.getInt("id");
-					String nome = rs.getString("nome");
-					String descricao = rs.getString("descricao");
-					Produto produto = new Produto(id, nome, descricao);
-					produtos.add(produto);
-				}
-			}
+			transformarResultadoProdutos(produtos, ps);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,5 +72,31 @@ public class ProdutoDAO {
 			System.out.println("Rollback efetuado.");
 		}
 		return linhasAtualizadas;
+	}
+
+	public List<Produto> buscar(Categoria categoria) {
+		List<Produto> produtos = new ArrayList<>();
+		String sql = "SELECT * FROM produto WHERE categoria_id = ?";
+		
+		try (PreparedStatement ps = connection.prepareStatement(sql)) {
+			ps.setInt(1, categoria.getId());
+			ps.execute();
+			transformarResultadoProdutos(produtos, ps);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return produtos;
+	}
+
+	private void transformarResultadoProdutos(List<Produto> produtos, PreparedStatement ps) throws SQLException {
+		try (ResultSet rs = ps.getResultSet()) {
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				String nome = rs.getString("nome");
+				String descricao = rs.getString("descricao");
+				Produto produto = new Produto(id, nome, descricao);
+				produtos.add(produto);
+			}
+		}
 	}
 }
